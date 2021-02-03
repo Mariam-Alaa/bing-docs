@@ -26,9 +26,9 @@ Install the Bing Entity Search client library dependencies by using Maven, Gradl
 
 ```xml
 <dependency>
-  <groupId>com.microsoft.azure.cognitiveservices</groupId>
-  <artifactId>azure-cognitiveservices-entitysearch</artifactId>
-  <version>1.0.2</version>
+    <groupId>com.microsoft.bing</groupId>
+    <artifactId>bing-entitysearch</artifactId>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -41,18 +41,19 @@ Install the Bing Entity Search client library dependencies by using Maven, Gradl
 1. Create a new Java project in your favorite IDE or editor, and import the following libraries.
 
     ```java
-    import com.microsoft.azure.cognitiveservices.entitysearch.*;
-    import com.microsoft.azure.cognitiveservices.entitysearch.implementation.EntitySearchAPIImpl;
-    import com.microsoft.azure.cognitiveservices.entitysearch.implementation.SearchResponseInner;
-    import com.microsoft.rest.credentials.ServiceClientCredentials;
-    import okhttp3.Interceptor;
-    import okhttp3.OkHttpClient;
-    import okhttp3.Request;
-    import okhttp3.Response;
-    
-    import java.io.IOException;
-    import java.util.ArrayList;
-    import java.util.List;
+        package com.microsoft.bing.samples;
+        import com.microsoft.bing.entitysearch.models.EntityScenario;
+        import com.microsoft.bing.entitysearch.models.ErrorResponseException;
+        import com.microsoft.bing.entitysearch.models.Place;
+        import com.microsoft.bing.entitysearch.models.SearchResponse;
+        import com.microsoft.bing.entitysearch.models.Thing;
+        import com.microsoft.bing.entitysearch.implementation.EntitySearchClientImpl;
+        import com.microsoft.rest.credentials.ServiceClientCredentials;
+        import okhttp3.*;
+        import okhttp3.OkHttpClient.Builder;
+        import java.io.IOException;
+        import java.util.List;
+        import java.util.ArrayList;
     ```
 
 2. Create a variable for your subscription key
@@ -63,15 +64,10 @@ Install the Bing Entity Search client library dependencies by using Maven, Gradl
 
 ## Create a search client
 
-1. Implement the `dominantEntityLookup` client, which requires your API endpoint, and an instance of the `ServiceClientCredentials` class. 
+1. Implement the  client, which requires your API endpoint, and an instance of the `ServiceClientCredentials` class. 
 
     ```java
-    public static EntitySearchAPIImpl getClient(final String subscriptionKey) {
-        return new EntitySearchAPIImpl("https://api.bing.microsoft.com/bing/v7.0/",
-                new ServiceClientCredentials() {
-                //...
-                }
-    )};
+    EntitySearchClientImpl client = new EntitySearchClientImpl(endpoint,credentials);
     ```
 
     To implement the `ServiceClientCredentials`, follow these steps:
@@ -121,9 +117,7 @@ Install the Bing Entity Search client library dependencies by using Maven, Gradl
 1. Create a new instance of the search client with your subscription key. use `client.entities().search()` to send a search request for the search query `satya nadella`, and get a response. 
     
     ```java
-    EntitySearchAPIImpl client = getClient(subscriptionKey);
-    SearchResponseInner entityData = client.entities().search(
-            "satya nadella", null, null, null, null, null, null, "en-us", null, null, SafeSearch.STRICT, null);
+        entityData = client.entities().search("William Gates");
     ```
 
 1. If any entities were returned, convert them into a list. Iterate through them, and print the dominant entity.
